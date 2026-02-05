@@ -1,0 +1,38 @@
+{
+  "family": "calorie-tracker-task",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512",
+  "executionRoleArn": "arn:aws:iam::262370813465:role/ecsTaskExecutionRole",
+  "containerDefinitions": [
+    {
+      "name": "ai-assistant",
+      "image": "262370813465.dkr.ecr.ap-southeast-2.amazonaws.com/ai-assistant:latest",
+      "essential": true,
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/ai-assistant",
+          "awslogs-region": "ap-southeast-2",
+          "awslogs-stream-prefix": "ecs",
+          "awslogs-create-group": "true"
+        }
+      },
+      "secrets": [
+        {
+          "name": "TELEGRAM_BOT_TOKEN",
+          "valueFrom": "arn:aws:secretsmanager:ap-southeast-2:262370813465:secret:calorie-tracker-secrets-shOm8Y:TELEGRAM_BOT_TOKEN::"
+        },
+        {
+          "name": "GEMINI_API_KEY",
+          "valueFrom": "arn:aws:secretsmanager:ap-southeast-2:262370813465:secret:calorie-tracker-secrets-shOm8Y:GEMINI_API_KEY::"
+        },
+        {
+          "name": "GEMINI_MODEL",
+          "valueFrom": "arn:aws:secretsmanager:ap-southeast-2:262370813465:secret:calorie-tracker-secrets-shOm8Y:GEMINI_MODEL::"
+        }
+      ]
+    }
+  ]
+}
